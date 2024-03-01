@@ -9,9 +9,7 @@ public interface IUser {
     public void updatePassword(String userEmail, String newPassword);
     public User updateUserName(String userEmail, String userName);
     public String getUserName(String userEmail);
-
     public User getUserByEmail(String userEmail);
-
     public void deleteUser(String userEmail);
 
 }

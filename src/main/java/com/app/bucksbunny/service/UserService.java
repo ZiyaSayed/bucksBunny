@@ -4,6 +4,7 @@ import com.app.bucksbunny.entity.User;
 import com.app.bucksbunny.exceptions.UserNotFoundException;
 import com.app.bucksbunny.repository.UserRepository;
 import com.app.bucksbunny.serviceInterface.IUser;
+import com.app.bucksbunny.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +17,9 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUser, UserDetailsService {
+
+    @Autowired
+    private JwtUtil jwt;
 
     @Autowired
     private UserRepository userRepo;
@@ -69,8 +73,6 @@ public class UserService implements IUser, UserDetailsService {
 
     }
 
-
-
     @Override
     public String getUserName(String userEmail) {
 
@@ -116,4 +118,12 @@ public class UserService implements IUser, UserDetailsService {
         return userDetail.map(UserInfoService::new).orElseThrow(()-> new UsernameNotFoundException("User not found"));
 
     }
+
+    private String getUserEmailFromToken(String token){
+        String jwtToken = token.replace("Bearer ", "");
+        // Extract user information from the token
+        String userEmail = jwt.extractUserEmail(jwtToken);
+        return userEmail;
+    }
+
 }
