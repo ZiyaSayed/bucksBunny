@@ -20,7 +20,7 @@ public class AccountTypeMapping {
     @Column(name="user_id")
     private String userId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="account_type", referencedColumnName = "id")
     private AccountType accountType; // accountType f.k
 

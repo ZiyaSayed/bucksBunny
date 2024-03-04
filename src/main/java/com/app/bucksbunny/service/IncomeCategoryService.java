@@ -2,7 +2,9 @@ package com.app.bucksbunny.service;
 
 
 import com.app.bucksbunny.entity.IncomeCategory;
+import com.app.bucksbunny.entity.IncomeCategoryMapping;
 import com.app.bucksbunny.exceptions.ResourceNotFoundException;
+import com.app.bucksbunny.repository.IncomeCategoryMappingRepository;
 import com.app.bucksbunny.repository.IncomeCategoryRepository;
 import com.app.bucksbunny.request.UpdateCategoryBody;
 import com.app.bucksbunny.serviceInterface.IIncomeCategory;
@@ -19,11 +21,23 @@ public class IncomeCategoryService implements IIncomeCategory {
     private IncomeCategoryRepository repo;
 
     @Autowired
-    private UserService userService;
+    private IncomeCategoryMappingRepository mappingRepo;
+
 
     @Override
-    public IncomeCategory addIncomeCategory(IncomeCategory incomeCategory) {
-        return repo.save(incomeCategory);
+    public IncomeCategory addIncomeCategory(IncomeCategory incomeCategory, String userEmail) {
+
+        // creating new income category
+        IncomeCategory newCategory = repo.save(incomeCategory);
+
+        // mapping it to the user income category(mapping) table
+        IncomeCategoryMapping newCategoryMapping = new IncomeCategoryMapping();
+        newCategoryMapping.setUserId(userEmail);
+        newCategoryMapping.setIncomeCategory(newCategory);
+
+        mappingRepo.save(newCategoryMapping);
+
+        return newCategory;
     }
 
     @Override
@@ -45,10 +59,6 @@ public class IncomeCategoryService implements IIncomeCategory {
         return categories;
     }
 
-    @Override
-    public IncomeCategory getIncomeCategoryByUser() {
-        return null;
-    }
 
     @Override
     public IncomeCategory updateIncomeCategoryById(int id, UpdateCategoryBody newData) {

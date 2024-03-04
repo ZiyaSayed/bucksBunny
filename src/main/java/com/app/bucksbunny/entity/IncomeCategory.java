@@ -1,5 +1,6 @@
 package com.app.bucksbunny.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,8 @@ public class IncomeCategory {
     @Column(name="icon")
     private String icon;
 
-    @OneToOne(mappedBy = "incomeCategory")
+    @JsonIgnore
+    @OneToOne(mappedBy = "incomeCategory", cascade = CascadeType.ALL)
     private IncomeCategoryMapping incomeCategoryMapping;
 
     @OneToMany(mappedBy = "category")

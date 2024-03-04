@@ -8,14 +8,13 @@ import java.util.List;
 public interface IIncomeCategory {
 
     // POST
-    public IncomeCategory addIncomeCategory(IncomeCategory incomeCategory);
+    public IncomeCategory addIncomeCategory(IncomeCategory incomeCategory, String userEmail);
 
     // GET
     public IncomeCategory getIncomeCategoryById(int id);
 
     public List<IncomeCategory> getAllIncomeCategory();
 
-    public IncomeCategory getIncomeCategoryByUser();
 
     // UPDATE
     public IncomeCategory updateIncomeCategoryById(int id, UpdateCategoryBody newData);
