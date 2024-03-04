@@ -1,12 +1,16 @@
 package com.app.bucksbunny.controller;
 
 import com.app.bucksbunny.entity.IncomeCategory;
+import com.app.bucksbunny.entity.IncomeCategoryMapping;
 import com.app.bucksbunny.request.UpdateCategoryBody;
 import com.app.bucksbunny.response.APIResponse;
+import com.app.bucksbunny.service.IncomeCategoryMappingService;
 import com.app.bucksbunny.service.IncomeCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +22,13 @@ public class IncomeCategoryController {
     @Autowired
     private IncomeCategoryService service;
 
-    @PostMapping("/new")
-    public ResponseEntity<APIResponse> addNewIncomeCategory(@RequestBody IncomeCategory category){
+    @Autowired
+    private IncomeCategoryMappingService mappingService;
 
-        IncomeCategory newCategory = service.addIncomeCategory(category);
+    @PostMapping("/new")
+    public ResponseEntity<APIResponse> addNewIncomeCategory(@RequestBody IncomeCategory category, @AuthenticationPrincipal UserDetails userDetails){
+
+        IncomeCategory newCategory = service.addIncomeCategory(category, userDetails.getUsername());
 
         APIResponse response = new APIResponse("", true, newCategory);
 
@@ -48,6 +55,18 @@ public class IncomeCategoryController {
             APIResponse response = new APIResponse("", true, category);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<APIResponse> getByUserId(@AuthenticationPrincipal UserDetails userDetails){
+
+
+        List<IncomeCategoryMapping> userCategories = mappingService.getIncomeCategoryByUser(userDetails.getUsername());
+
+        APIResponse response = new APIResponse("", true, userCategories);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 

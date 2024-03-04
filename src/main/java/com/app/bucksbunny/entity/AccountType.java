@@ -1,5 +1,6 @@
 package com.app.bucksbunny.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,8 +29,9 @@ public class AccountType {
     @Column(name="amount")
     private long amount;
 
-    @OneToOne(mappedBy = "accountType")
-    private AccountTypeMapping accountTypeMapping;
+    @JsonIgnore
+    @OneToMany(mappedBy = "accountType")
+    private List<AccountTypeMapping> accountTypeMapping;
 
     @OneToMany(mappedBy = "accountType")
     private List<Income> income;

@@ -41,7 +41,7 @@ public class SecurityConfig {
                  .requestMatchers("/user/welcome", "/user/new","/admin/new", "/user/login", "/error").permitAll()
                  .requestMatchers("/user/**").authenticated()
                  .requestMatchers("/admin/**").authenticated()
-                                 .requestMatchers("/category/**").authenticated()
+                                 .requestMatchers("/category/**", "/account/**").authenticated()
                                  .requestMatchers("/income/**").permitAll()
                  ).sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                  .authenticationProvider(authenticationProvider())

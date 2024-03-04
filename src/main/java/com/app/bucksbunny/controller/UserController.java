@@ -16,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,18 +43,36 @@ public class UserController {
        return service.addUser(user);
    }
 
+//    @GetMapping("/profile")
+//    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+//    public ResponseEntity<APIResponse> profile(@RequestHeader("Authorization") String token) {
+//        // Remove "Bearer " prefix from the token
+//        String jwtToken = token.replace("Bearer ", "");
+//
+//        // Extract user information from the token
+//        String userEmail = jwt.extractUserEmail(jwtToken);
+//        User user = service.getUserByEmail(userEmail);
+//
+//        APIResponse response = new APIResponse("", true, user);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+
     @GetMapping("/profile")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<APIResponse> profile(@RequestHeader("Authorization") String token) {
-        // Remove "Bearer " prefix from the token
-        String jwtToken = token.replace("Bearer ", "");
+    public ResponseEntity<APIResponse> profile(@AuthenticationPrincipal UserDetails userDetails) {
 
-        // Extract user information from the token
-        String userEmail = jwt.extractUserEmail(jwtToken);
-        User user = service.getUserByEmail(userEmail);
+        User user = service.getUserByEmail(userDetails.getUsername());
 
         APIResponse response = new APIResponse("", true, user);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping("/resource")
+    public ResponseEntity<APIResponse> home(@AuthenticationPrincipal UserDetails userDetails) {
+
+        APIResponse response = new APIResponse("", true, userDetails.getUsername());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
    @PostMapping("/login")
@@ -71,11 +91,9 @@ public class UserController {
 
     @PatchMapping("/update-username")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<APIResponse> updateUserName(@RequestHeader("Authorization") String token, @RequestBody UpdateUserBody updateUser){
+    public ResponseEntity<APIResponse> updateUserName(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UpdateUserBody updateUser){
 
-
-            String userEmail = getUserEmailFromToken(token);
-            User user = service.updateUserName(userEmail, updateUser.getUserName());
+            User user = service.updateUserName(userDetails.getUsername(), updateUser.getUserName());
 
             APIResponse response = new APIResponse("", true, user);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -84,10 +102,9 @@ public class UserController {
 
     @PatchMapping("/update-password")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<APIResponse> updateUserPassword(@RequestHeader("Authorization") String token, @RequestBody UpdateUserPasswordBody updateUser){
+    public ResponseEntity<APIResponse> updateUserPassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UpdateUserPasswordBody updateUser){
 
-        String userEmail = getUserEmailFromToken(token);
-        service.updatePassword(userEmail, updateUser.getPassword());
+        service.updatePassword(userDetails.getUsername(), updateUser.getPassword());
 
         APIResponse response = new APIResponse("", true, "Password Updated Successfully");
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -97,10 +114,9 @@ public class UserController {
     @DeleteMapping("/remove")
     @Transactional
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<APIResponse> deleteUser(@RequestHeader("Authorization") String token) throws Exception {
+    public ResponseEntity<APIResponse> deleteUser(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
         try {
-            String userEmail = getUserEmailFromToken(token);
-            service.deleteUser(userEmail);
+            service.deleteUser(userDetails.getUsername());
             APIResponse response = new APIResponse("",  true, "Password Updated Successfully");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
