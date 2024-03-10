@@ -1,5 +1,6 @@
 package com.app.bucksbunny.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +33,8 @@ public class Income {
     @Column(name="time")
     private LocalTime time;
 
-    @OneToOne(mappedBy = "income")
+    @JsonIgnore
+    @OneToOne(mappedBy = "income", cascade = CascadeType.REMOVE)
     private UserIncome userIncome;
 
     @ManyToOne

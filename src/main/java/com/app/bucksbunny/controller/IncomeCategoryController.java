@@ -32,7 +32,7 @@ public class IncomeCategoryController {
 
         APIResponse response = new APIResponse("", true, newCategory);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
 

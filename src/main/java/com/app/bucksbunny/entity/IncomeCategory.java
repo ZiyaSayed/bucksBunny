@@ -30,6 +30,7 @@ public class IncomeCategory {
     @OneToOne(mappedBy = "incomeCategory", cascade = CascadeType.ALL)
     private IncomeCategoryMapping incomeCategoryMapping;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Income> income;
 }
