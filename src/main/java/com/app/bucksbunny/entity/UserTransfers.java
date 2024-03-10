@@ -20,7 +20,7 @@ public class UserTransfers {
     @Column(name="user_id")
     private String userId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="transfer_id", referencedColumnName = "id")
     private Transfers transfer; // transferId f.k
 }

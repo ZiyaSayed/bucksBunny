@@ -8,6 +8,7 @@ import com.app.bucksbunny.repository.IncomeCategoryMappingRepository;
 import com.app.bucksbunny.repository.IncomeCategoryRepository;
 import com.app.bucksbunny.request.UpdateCategoryBody;
 import com.app.bucksbunny.serviceInterface.IIncomeCategory;
+import com.app.bucksbunny.serviceInterface.IIncomeCategoryMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IncomeCategoryService implements IIncomeCategory {
+public class IncomeCategoryService implements IIncomeCategory, IIncomeCategoryMapping {
 
     @Autowired
     private IncomeCategoryRepository repo;
@@ -95,5 +96,13 @@ public class IncomeCategoryService implements IIncomeCategory {
 
         throw new ResourceNotFoundException();
 
+    }
+
+    @Override
+    public List<IncomeCategoryMapping> getIncomeCategoryByUser(String userEmail) {
+
+        List<IncomeCategoryMapping> userCategories = mappingRepo.findAllByUserId(userEmail);
+
+        return userCategories;
     }
 }

@@ -4,7 +4,6 @@ import com.app.bucksbunny.entity.IncomeCategory;
 import com.app.bucksbunny.entity.IncomeCategoryMapping;
 import com.app.bucksbunny.request.UpdateCategoryBody;
 import com.app.bucksbunny.response.APIResponse;
-import com.app.bucksbunny.service.IncomeCategoryMappingService;
 import com.app.bucksbunny.service.IncomeCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +21,6 @@ public class IncomeCategoryController {
     @Autowired
     private IncomeCategoryService service;
 
-    @Autowired
-    private IncomeCategoryMappingService mappingService;
 
     @PostMapping("/new")
     public ResponseEntity<APIResponse> addNewIncomeCategory(@RequestBody IncomeCategory category, @AuthenticationPrincipal UserDetails userDetails){
@@ -32,7 +29,7 @@ public class IncomeCategoryController {
 
         APIResponse response = new APIResponse("", true, newCategory);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
 
@@ -62,7 +59,7 @@ public class IncomeCategoryController {
     public ResponseEntity<APIResponse> getByUserId(@AuthenticationPrincipal UserDetails userDetails){
 
 
-        List<IncomeCategoryMapping> userCategories = mappingService.getIncomeCategoryByUser(userDetails.getUsername());
+        List<IncomeCategoryMapping> userCategories = service.getIncomeCategoryByUser(userDetails.getUsername());
 
         APIResponse response = new APIResponse("", true, userCategories);
 

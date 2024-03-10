@@ -1,9 +1,9 @@
 package com.app.bucksbunny.controller;
 
-import com.app.bucksbunny.entity.AccountType;
-import com.app.bucksbunny.entity.AccountTypeMapping;
+import com.app.bucksbunny.entity.Transfers;
+import com.app.bucksbunny.entity.UserTransfers;
 import com.app.bucksbunny.response.APIResponse;
-import com.app.bucksbunny.service.AccountTypeService;
+import com.app.bucksbunny.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,29 +14,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account")
-public class AccountTypeController {
+@RequestMapping("/transfer")
+public class TransferController {
 
     @Autowired
-    private AccountTypeService service;
+    private TransferService service;
 
 
     @PostMapping("/new")
-    public ResponseEntity<APIResponse> addNewAccountType(@RequestBody AccountType accountType, @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<APIResponse> addTransfers(@RequestBody Transfers transfer, @AuthenticationPrincipal UserDetails userDetails){
 
-        AccountType newAccount = service.addAccountType(accountType, userDetails.getUsername());
+        Transfers newTransfer = service.addTransfer(transfer, userDetails.getUsername());
 
-        APIResponse response = new APIResponse("", true, newAccount);
+        APIResponse response = new APIResponse("", true, newTransfer);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<APIResponse> getList(){
 
-        List<AccountType> accounts = service.getAllAccountType();
+        List<Transfers> transferList = service.getAllTransfers();
 
-        APIResponse response = new APIResponse("", true, accounts);
+        APIResponse response = new APIResponse("", true, transferList);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -44,33 +44,29 @@ public class AccountTypeController {
     @GetMapping("/{id}")
     public ResponseEntity<APIResponse> getById(@PathVariable int id){
 
+        Transfers transfer = service.getTransferById(id);
 
-        AccountType account = service.getAccountTypeById(id);
-
-        APIResponse response = new APIResponse("", true, account);
+        APIResponse response = new APIResponse("", true, transfer);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     @GetMapping("/me")
     public ResponseEntity<APIResponse> getByUserId(@AuthenticationPrincipal UserDetails userDetails){
 
+        List<UserTransfers> userTransfers = service.getTransfersByUser(userDetails.getUsername());
 
-        List<AccountTypeMapping> userAccounts = service.getAccountTypeByUser(userDetails.getUsername());
-
-        APIResponse response = new APIResponse("", true, userAccounts);
+        APIResponse response = new APIResponse("", true, userTransfers);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<APIResponse> updateById(@PathVariable int id, @RequestBody AccountType newData){
+    public ResponseEntity<APIResponse> updateById(@PathVariable int id, @RequestBody Transfers newData){
 
-        AccountType newAccountType = service.updateAccountType(id,newData);
+        Transfers transfer = service.updateTransfers(id, newData);
 
-        APIResponse response = new APIResponse("", true, newAccountType);
+        APIResponse response = new APIResponse("", true, transfer);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -78,7 +74,7 @@ public class AccountTypeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<APIResponse> deleteById(@PathVariable int id){
 
-        service.deleteAccountType(id);
+         service.deleteTransfer(id);
 
         APIResponse response = new APIResponse("", true, null);
 

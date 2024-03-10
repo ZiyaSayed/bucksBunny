@@ -6,6 +6,7 @@ import com.app.bucksbunny.exceptions.ResourceNotFoundException;
 import com.app.bucksbunny.repository.AccountTypeMappingRepository;
 import com.app.bucksbunny.repository.AccountTypeRepository;
 import com.app.bucksbunny.serviceInterface.IAccountType;
+import com.app.bucksbunny.serviceInterface.IAccountTypeMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountTypeService implements IAccountType {
+public class AccountTypeService implements IAccountType, IAccountTypeMapping {
 
     @Autowired
     private AccountTypeRepository repo;
@@ -92,5 +93,13 @@ public class AccountTypeService implements IAccountType {
         }
 
         throw new ResourceNotFoundException();
+    }
+
+    @Override
+    public List<AccountTypeMapping> getAccountTypeByUser(String userEmail) {
+
+        List<AccountTypeMapping> userAccounts = mappingRepo.findAllByUserId(userEmail);
+
+        return userAccounts;
     }
 }
