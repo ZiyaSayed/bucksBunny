@@ -4,7 +4,6 @@ import com.app.bucksbunny.entity.Transfers;
 import com.app.bucksbunny.entity.UserTransfers;
 import com.app.bucksbunny.response.APIResponse;
 import com.app.bucksbunny.service.TransferService;
-import com.app.bucksbunny.service.UserTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,6 @@ public class TransferController {
     @Autowired
     private TransferService service;
 
-    @Autowired
-    private UserTransferService mappingService;
 
     @PostMapping("/new")
     public ResponseEntity<APIResponse> addTransfers(@RequestBody Transfers transfer, @AuthenticationPrincipal UserDetails userDetails){
@@ -57,7 +54,7 @@ public class TransferController {
     @GetMapping("/me")
     public ResponseEntity<APIResponse> getByUserId(@AuthenticationPrincipal UserDetails userDetails){
 
-        List<UserTransfers> userTransfers = mappingService.getTransfersByUser(userDetails.getUsername());
+        List<UserTransfers> userTransfers = service.getTransfersByUser(userDetails.getUsername());
 
         APIResponse response = new APIResponse("", true, userTransfers);
 

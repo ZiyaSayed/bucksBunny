@@ -6,6 +6,7 @@ import com.app.bucksbunny.exceptions.ResourceNotFoundException;
 import com.app.bucksbunny.repository.TransferRepository;
 import com.app.bucksbunny.repository.UserTransfersRepository;
 import com.app.bucksbunny.serviceInterface.ITransfers;
+import com.app.bucksbunny.serviceInterface.IUserTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TransferService implements ITransfers {
+public class TransferService implements ITransfers, IUserTransfer {
 
     @Autowired
     private TransferRepository repo;
@@ -122,5 +123,13 @@ public class TransferService implements ITransfers {
 
         throw  new ResourceNotFoundException();
 
+    }
+
+    @Override
+    public List<UserTransfers> getTransfersByUser(String userEmail) {
+
+        List<UserTransfers> userTransfers = mappingRepo.findAllByUserId(userEmail);
+
+        return userTransfers;
     }
 }

@@ -3,7 +3,6 @@ package com.app.bucksbunny.controller;
 import com.app.bucksbunny.entity.AccountType;
 import com.app.bucksbunny.entity.AccountTypeMapping;
 import com.app.bucksbunny.response.APIResponse;
-import com.app.bucksbunny.service.AccountTypeMappingService;
 import com.app.bucksbunny.service.AccountTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,6 @@ public class AccountTypeController {
     @Autowired
     private AccountTypeService service;
 
-    @Autowired
-    private AccountTypeMappingService mappingService;
 
     @PostMapping("/new")
     public ResponseEntity<APIResponse> addNewAccountType(@RequestBody AccountType accountType, @AuthenticationPrincipal UserDetails userDetails){
@@ -60,7 +57,7 @@ public class AccountTypeController {
     public ResponseEntity<APIResponse> getByUserId(@AuthenticationPrincipal UserDetails userDetails){
 
 
-        List<AccountTypeMapping> userAccounts = mappingService.getAccountTypeByUser(userDetails.getUsername());
+        List<AccountTypeMapping> userAccounts = service.getAccountTypeByUser(userDetails.getUsername());
 
         APIResponse response = new APIResponse("", true, userAccounts);
 
