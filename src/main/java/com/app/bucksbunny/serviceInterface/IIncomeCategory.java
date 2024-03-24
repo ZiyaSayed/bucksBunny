@@ -1,6 +1,7 @@
 package com.app.bucksbunny.serviceInterface;
 
 import com.app.bucksbunny.entity.IncomeCategory;
+import com.app.bucksbunny.entity.IncomeCategoryMapping;
 import com.app.bucksbunny.request.UpdateCategoryBody;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface IIncomeCategory {
 
     public List<IncomeCategory> getAllIncomeCategory();
 
+    public List<IncomeCategoryMapping> getIncomeCategoryByUser(String userEmail);
 
     // UPDATE
     public IncomeCategory updateIncomeCategoryById(int id, UpdateCategoryBody newData);

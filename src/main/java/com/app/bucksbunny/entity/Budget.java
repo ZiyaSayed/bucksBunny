@@ -23,6 +23,7 @@ public class Budget {
     @Column(name="spent")
     private int spent;
 
-    @OneToOne(mappedBy = "budget")
-    private ExpenseCategory category;
+    @ManyToOne
+    @JoinColumn(name="expense_category", referencedColumnName = "id")
+    private ExpenseCategory category; // f.k
 }

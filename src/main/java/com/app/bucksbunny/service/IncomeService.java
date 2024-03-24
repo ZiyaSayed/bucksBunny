@@ -6,7 +6,6 @@ import com.app.bucksbunny.exceptions.ResourceNotFoundException;
 import com.app.bucksbunny.repository.IncomeRepository;
 import com.app.bucksbunny.repository.UserIncomeRepository;
 import com.app.bucksbunny.serviceInterface.IIncome;
-import com.app.bucksbunny.serviceInterface.IUserIncome;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IncomeService implements IIncome, IUserIncome {
+public class IncomeService implements IIncome {
 
     @Autowired
     private IncomeRepository repo;
@@ -27,7 +26,7 @@ public class IncomeService implements IIncome, IUserIncome {
     @Override
     public Income addIncome(Income income, String userEmail) {
 
-        // checking if transfer have date & time
+        // checking if income have date & time
         if(income.getDate() == null){
             income.setDate(LocalDate.now());
         }
@@ -72,7 +71,7 @@ public class IncomeService implements IIncome, IUserIncome {
     @Override
     public Income updateIncomeById(int id, Income newData) {
 
-        // get the category by id
+        // get the income by id
         Optional<Income> entry = repo.findById(id);
 
         if(entry.isPresent()){

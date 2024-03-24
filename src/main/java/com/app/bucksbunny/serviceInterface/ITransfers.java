@@ -1,6 +1,7 @@
 package com.app.bucksbunny.serviceInterface;
 
 import com.app.bucksbunny.entity.Transfers;
+import com.app.bucksbunny.entity.UserTransfers;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface ITransfers {
     public Transfers getTransferById(int id);
 
     public List<Transfers> getAllTransfers();
+
+    public List<UserTransfers> getTransfersByUser(String userEmail);
 
     // ========= UPDATE =========
     public Transfers updateTransfers(int id, Transfers newData);

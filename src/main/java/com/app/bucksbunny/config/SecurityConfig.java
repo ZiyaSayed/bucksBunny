@@ -41,7 +41,7 @@ public class SecurityConfig {
                  .requestMatchers("/user/welcome", "/user/new","/admin/new", "/user/login", "/error").permitAll()
                  .requestMatchers("/user/**").authenticated()
                  .requestMatchers("/admin/**").authenticated()
-                                 .requestMatchers("/category/**", "/account/**", "/transfer/**", "/income/**").authenticated()
+                                 .requestMatchers( "/account/**", "/transfer/**", "/income/**", "/expense/**").authenticated()
                  ).sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                  .authenticationProvider(authenticationProvider())
                  .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)

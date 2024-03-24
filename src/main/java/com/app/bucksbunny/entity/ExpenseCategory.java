@@ -1,5 +1,6 @@
 package com.app.bucksbunny.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,13 +26,15 @@ public class ExpenseCategory {
     @Column(name="icon")
     private String icon;
 
-    @OneToOne
-    @JoinColumn(name="budget", referencedColumnName = "id")
-    private Budget budget; // budget f.k
+    @JsonIgnore
+    @OneToMany(mappedBy = "category")
+    private List<Budget> budget;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Expense> expense;
 
-    @OneToMany(mappedBy = "expenseCategory")
-    private List<ExpenseCategoryMapping> expenseCategoryMapping;
+    @JsonIgnore
+    @OneToOne(mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
+    private ExpenseCategoryMapping expenseCategoryMapping;
 }

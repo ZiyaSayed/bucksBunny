@@ -1,6 +1,7 @@
 package com.app.bucksbunny.serviceInterface;
 
 import com.app.bucksbunny.entity.Income;
+import com.app.bucksbunny.entity.UserIncome;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface IIncome {
     public Income getIncomeById(int id);
 
     public List<Income> getAllIncome();
+
+    public List<UserIncome> getIncomeByUser(String userEmail);
 
     // UPDATE
     public Income updateIncomeById(int id, Income newData);

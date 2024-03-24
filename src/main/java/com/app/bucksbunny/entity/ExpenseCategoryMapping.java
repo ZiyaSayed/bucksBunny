@@ -17,11 +17,11 @@ public class ExpenseCategoryMapping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Id
+
     @Column(name="user_id")
     private String userId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="expense_category", referencedColumnName = "id")
     private ExpenseCategory expenseCategory; // userExpenseCategory f.k
 

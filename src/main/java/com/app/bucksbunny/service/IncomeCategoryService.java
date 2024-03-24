@@ -8,7 +8,6 @@ import com.app.bucksbunny.repository.IncomeCategoryMappingRepository;
 import com.app.bucksbunny.repository.IncomeCategoryRepository;
 import com.app.bucksbunny.request.UpdateCategoryBody;
 import com.app.bucksbunny.serviceInterface.IIncomeCategory;
-import com.app.bucksbunny.serviceInterface.IIncomeCategoryMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IncomeCategoryService implements IIncomeCategory, IIncomeCategoryMapping {
+public class IncomeCategoryService implements IIncomeCategory {
 
     @Autowired
     private IncomeCategoryRepository repo;
