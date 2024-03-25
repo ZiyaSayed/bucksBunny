@@ -23,7 +23,23 @@ public class Budget {
     @Column(name="spent")
     private int spent;
 
+//    @JsonIgnore
+//    @Transient
+//    private int monthNumber;
+
+    @Column(name="month")
+    private int month;
+
+    @Column(name="year")
+    private String year;
+
     @ManyToOne
     @JoinColumn(name="expense_category", referencedColumnName = "id")
     private ExpenseCategory category; // f.k
+
+
+//    public void setMonthName(int monthNumber) {
+//        // Set monthName based on the monthNumber
+//        this.month = String.valueOf(Month.of(monthNumber));
+//    }
 }

@@ -135,8 +135,11 @@ public class ExpenseCategoryService implements IExpenseCategory {
     }
 
     @Override
-    public List<Budget> getBudgetByMonth(int id) {
-        return null;
+    public List<Budget> getBudgetByMonth(int month, String year) {
+
+        List<Budget> budgetList = budgetRepo.findAllByMonthAndYear(month, year);
+
+        return budgetList;
     }
 
     @Override
@@ -159,5 +162,14 @@ public class ExpenseCategoryService implements IExpenseCategory {
     @Override
     public void deleteBudgetById(int budgetId) {
 
+        Optional<Budget> entry = budgetRepo.findById(budgetId);
+
+        if(entry.isPresent()){
+            budgetRepo.deleteById(budgetId);
+
+            return;
+        }
+
+        throw new ResourceNotFoundException();
     }
 }

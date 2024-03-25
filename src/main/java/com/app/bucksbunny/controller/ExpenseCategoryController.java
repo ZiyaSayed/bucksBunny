@@ -120,4 +120,25 @@ public class ExpenseCategoryController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/budget/{year}/{month}")
+    public ResponseEntity<APIResponse> getBudgetByMonth(@PathVariable int month, @PathVariable String year){
+
+      List<Budget> budget =  service.getBudgetByMonth(month, year);
+
+        APIResponse response = new APIResponse("", true, budget);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/budget/{id}")
+    public ResponseEntity<APIResponse> deleteBudgetById(@PathVariable int id){
+
+        service.deleteBudgetById(id);
+
+        APIResponse response = new APIResponse("", true, null);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

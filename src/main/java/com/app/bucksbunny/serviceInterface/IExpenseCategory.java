@@ -32,7 +32,7 @@ public interface IExpenseCategory {
     public Budget addBudget( Budget newBudget);
 
     // GET
-    public List<Budget> getBudgetByMonth(int month);
+    public List<Budget> getBudgetByMonth(int month, String year);
 
     public Budget getBudgetById(int id);
 

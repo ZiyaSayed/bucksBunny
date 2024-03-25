@@ -21,7 +21,7 @@ public class ExpenseCategoryMapping {
     @Column(name="user_id")
     private String userId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="expense_category", referencedColumnName = "id")
     private ExpenseCategory expenseCategory; // userExpenseCategory f.k
 
